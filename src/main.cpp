@@ -23,7 +23,7 @@
 #include "helper.hpp"
 
 constexpr std::string_view ASSETS_PATH{"/assets"};
-constexpr std::string_view API_PATH{"/backend-api/v2/conversation"};
+constexpr std::string_view API_PATH{"/gpt/chat/backend-api/v2/conversation"};
 
 using GptCallback = std::function<boost::asio::awaitable<void>(std::shared_ptr<FreeGpt::Channel>, nlohmann::json)>;
 inline std::unordered_map<std::string, GptCallback> gpt_function;
