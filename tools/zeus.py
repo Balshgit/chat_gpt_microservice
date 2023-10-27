@@ -1,4 +1,4 @@
-import execjs, os, json, time, threading, traceback
+import execjs, os, json, time, threading, traceback, requests, random, base64
 
 from flask import Flask, request
 from werkzeug.serving import ThreadedWSGIServer
@@ -47,6 +47,26 @@ return o.toString()
 """
     source = source.replace("{include}", json.dumps(include))
     dict = {"secret": execjs.compile(source).call("")}
+    return json.dumps(dict)
+
+
+# curl -X POST -d '{}' -H "Content-Type: application/json" http://127.0.0.1:8860/vercel
+@app.route("/vercel", methods=["POST"])
+def get_anti_bot_token():
+    request_body = json.loads(request.data)
+    raw_data = json.loads(base64.b64decode(request_body['data'], validate=True))
+
+    js_script = """const globalThis={marker:"mark"};String.prototype.fontcolor=function(){return `<font>${this}</font>`};
+        return (%s)(%s)""" % (
+        raw_data["c"],
+        raw_data["a"],
+    )
+
+    raw_token = json.dumps(
+        {"r": execjs.compile(js_script).call(""), "t": raw_data["t"]},
+        separators=(",", ":"),
+    )
+    dict = {"data": base64.b64encode(raw_token.encode("utf-16le")).decode()}
     return json.dumps(dict)
 
 
