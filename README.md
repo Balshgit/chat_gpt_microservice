@@ -64,31 +64,42 @@ docker pull fantasypeak/freegpt:latest
 
 Run the application using Docker:
 ```
-docker run -p 8858:8858 -it --name freegpt fantasypeak/freegpt:latest
+docker run --rm -p 8858:8858 -it --name freegpt fantasypeak/freegpt:latest
 // OR
-docker run --net=host -it --name freegpt fantasypeak/freegpt:latest
+docker run --rm --net=host -it --name freegpt fantasypeak/freegpt:latest
 // use http_proxy
-docker run -p 8858:8858 -it --name freegpt -e HTTP_PROXY=http://127.0.0.1:8080 -e CHAT_PATH=/chat fantasypeak/freegpt:latest
+docker run --rm -p 8858:8858 -it --name freegpt -e HTTP_PROXY=http://127.0.0.1:8080 -e CHAT_PATH=/chat fantasypeak/freegpt:latest
 // set active providers
-docker run -p 8858:8858 -it --name freegpt -e CHAT_PATH=/chat -e PROVIDERS="[\"gpt-4-ChatgptAi\",\"gpt-3.5-turbo-stream-DeepAi\"]" fantasypeak/freegpt:latest
+docker run --rm -p 8858:8858 -it --name freegpt -e CHAT_PATH=/chat -e PROVIDERS="[\"gpt-4-ChatgptAi\",\"gpt-3.5-turbo-stream-DeepAi\"]" fantasypeak/freegpt:latest
 // enable ip white list function
-docker run -p 8858:8858 -it --name freegpt -e IP_WHITE_LIST="[\"127.0.0.1\",\"192.168.1.1\"]" fantasypeak/freegpt:latest
+docker run --rm -p 8858:8858 -it --name freegpt -e IP_WHITE_LIST="[\"127.0.0.1\",\"192.168.1.1\"]" fantasypeak/freegpt:latest
 ```
 
-### Start the Zeus Service
-Zeus is a cpp-freegpt-webui auxiliary service, because some provider needs to perform specific operations such as get cookies and refreshing web pages etc.
+### Start the Zeus Service [optional]
+This is not necessary, Zeus is a cpp-freegpt-webui auxiliary service, because some provider needs to perform specific operations such as get cookies and refreshing web pages etc.
 If you need to use these specific providers, you need to start it(Zeus Docker)
 ```
 docker pull fantasypeak/freegpt-zeus:latest
-docker run --net=host -it --name zeus fantasypeak/freegpt-zeus:latest
+docker run --rm --net=host -it --name zeus fantasypeak/freegpt-zeus:latest
 docker pull fantasypeak/freegpt:latest
-docker run --net=host -it --name freegpt fantasypeak/freegpt:latest
+docker run --rm --net=host -it --name freegpt fantasypeak/freegpt:latest
+```
+
+### Start the flaresolverr docker [optional]
+This is not necessary, The some provider(aivvm) is enabled Cloudflare challenges, so we need use flaresolverr to solve it.
+```
+docker run -d \
+  --name=flaresolverr \
+  -p 8191:8191 \
+  -e LOG_LEVEL=info \
+  --restart unless-stopped \
+  ghcr.io/flaresolverr/flaresolverr:latest
 ```
 
 ### Call OpenAi Api
 ```
 // It supports calling OpenAI's API, but need set API_KEY
-docker run -p 8858:8858 -it --name freegpt -e CHAT_PATH=/chat -e API_KEY=a40f22f2-c1a2-4b1d-a47f-55ae1a7ddbed fantasypeak/freegpt:latest
+docker run --rm -p 8858:8858 -it --name freegpt -e CHAT_PATH=/chat -e API_KEY=a40f22f2-c1a2-4b1d-a47f-55ae1a7ddbed fantasypeak/freegpt:latest
 ```
 
 ### WebUI
