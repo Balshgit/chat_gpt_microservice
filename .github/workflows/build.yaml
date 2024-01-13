@@ -24,7 +24,7 @@ jobs:
           cd /usr/lib64
           sudo tar -xvf libcurl-impersonate-v0.6.0-alpha.1.x86_64-linux-gnu.tar.gz
           cd -
-          curl -kfsSL https://xmake.io/shget.text | bash -s v2.8.6
+          curl -fsSL https://xmake.io/shget.text | bash
 
       - name: checkout
         uses: actions/checkout@v3
