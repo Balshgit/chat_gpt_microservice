@@ -24,7 +24,13 @@ jobs:
           cd /usr/lib64
           sudo tar -xvf libcurl-impersonate-v0.6.0-alpha.1.x86_64-linux-gnu.tar.gz
           cd -
-          curl -kfsSL https://xmake.io/shget.text | bash -s v2.8.6
+          git clone --recursive https://github.com/Balshgit/xmake.git
+          cd ./xmake
+          # On macOS, you may need to run: export SDKROOT=$(xcrun --sdk macosx --show-sdk-path)
+          ./configure
+          make
+          ./scripts/get.sh __local__ __install_only__
+          source ~/.xmake/profile
 
       - name: checkout
         uses: actions/checkout@v3
