@@ -33,7 +33,6 @@ jobs:
       - name: build
         run: |
           export XMAKE_ROOT="y"
-          source ~/.xmake/profile
           g++-13 -v
           export LD_LIBRARY_PATH=/usr/lib64:$LD_LIBRARY_PATH
           export LIBRARY_PATH=/usr/lib64:$LIBRARY_PATH
